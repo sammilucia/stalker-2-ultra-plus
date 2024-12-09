@@ -1,0 +1,2 @@
+".\mod_fsr3-fg\Stalker2\*" "../../../Stalker2/"
+".\mod_fsr3-fg\Engine\*" "../../../Engine/"
