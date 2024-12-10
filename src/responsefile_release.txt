@@ -1,0 +1,2 @@
+".\mod_release\Stalker2\*" "../../../Stalker2/"
+".\mod_release\Engine\*" "../../../Engine/"
