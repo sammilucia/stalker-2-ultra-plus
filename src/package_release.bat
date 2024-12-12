@@ -1,6 +1,6 @@
 @echo off
 
-set VERSION=1.6.3
+set VERSION=1.6.5-test
 
 7z a -r "..\dist\Stalker 2 Ultra Plus v%VERSION%.zip" .\build_release\*
 7z a -r "..\dist\Stalker 2 Ultra Plus v%VERSION%-gp.zip" .\build_release-gp\*
