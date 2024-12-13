@@ -103,9 +103,9 @@ local var = {
 		ULTRA	= 'ultra',
 	},
 	MotionBlur = {
-		OFF = 'Off',
-		LOW = 'Low',
-		HIGH = 'High',
+		OFF = 'off',
+		LOW = 'low',
+		HIGH = 'high',
 	},
 	LumenPercent = {
 		ULTRAPERF = '0.33',
@@ -464,18 +464,20 @@ end
 local function pushMotionBlur()
 	local switchMotionBlur = {
 		[var.MotionBlur.OFF] = function()
-			setCVar('r.DefaultFeature.MotionBlur', '0')
+			-- setCVar('r.DefaultFeature.MotionBlur', '0') this does not work
+			setCVar('r.MotionBlur.Amount', '0')
 		end,
 		[var.MotionBlur.LOW] = function()
-			setCVar('r.DefaultFeature.MotionBlur', '1')
+			-- setCVar('r.DefaultFeature.MotionBlur', '1') this does not work
 			setCVar('r.MotionBlur.Amount', '0.2')
 		end,
 		[var.MotionBlur.HIGH] = function()
-			setCVar('r.DefaultFeature.MotionBlur', '1')
+			-- setCVar('r.DefaultFeature.MotionBlur', '1') this does not work
 			setCVar('r.MotionBlur.Amount', '0.4')
 		end,
 	}
 	local switchFunction = switchMotionBlur[config.MotionBlur]
+	__log("Setting motion blur to " .. config.MotionBlur)
 	switchFunction()
 end
 
@@ -698,7 +700,8 @@ local function pushEnableModGranularControl()
 
 	if not keybindsRegistered then
 	    keybindsRegistered = true	
-		RegisterUltraKeybinds()
+		-- just do this by default so people don't get confused by not having some of the buttons
+		-- RegisterUltraKeybinds()
 	end
 end
 
@@ -713,6 +716,7 @@ local function restoreConfig()
 	__log('Restoring configuration')
 	pushDenoiser()
 	pushVignette()
+	pushMotionBlur()
 	pushDLSSPreset()
 	pushReflex()
 	pushHDR()
@@ -783,6 +787,9 @@ local function initUltraExtensions()
 	if isInitialized then
 		return
 	end
+
+	-- just do this by default so people don't get confused by not having some of the buttons like HDR
+	RegisterUltraKeybinds()
 
 	loadConfig()
 	pushUltraPlusQuality(true)
