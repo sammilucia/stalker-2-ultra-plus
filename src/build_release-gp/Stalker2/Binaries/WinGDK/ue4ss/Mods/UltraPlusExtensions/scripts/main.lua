@@ -182,8 +182,14 @@ local config = {
 local scalabilityGroups
 
 -- default to nvidia, will get loaded from config/RuntimeSettings.ini [FrameGenerationMode]
+local nvFrameGenerationCvar = "r.Streamline.DLSSG.Enable"
+local nvFrameGenerationCvarEnableValue = "1"
+local amdFrameGenerationCvar = "r.FidelityFX.FI.Enabled"
+local amdFrameGenerationCvarEnableValue = "1" 
+
 local frameGenerationCvar = "r.Streamline.DLSSG.Enable"
-local frameGenerationCvarEnableValue = "1"
+local frameGenerationCvarEnableValue = "1" 
+
 local isFSRFI = false
 
 --- @param msg string
@@ -359,7 +365,7 @@ local function checkCvar(cvar, expectedValue, forceSetExpected)
 			if checkCvar(cvar, uplusValue, false) then
 				__log(string.format("set %s to %s from: %s", cvar, uplusValue, gameValue))
 			else
-				__log(string.format("check ingame console, unsure if %s is set as to expected value: %s", cvar, uplusValue))
+				-- __log(string.format("check ingame console, unsure if %s is set as to expected value: %s", cvar, uplusValue))
 			end
 		end
 		return false
@@ -382,15 +388,6 @@ local function validateInis(forceSetExpected)
 					ExecuteWithDelay(2000, function()
 						checkCvar(cvar, cvarValue, forceSetExpected)	
 					end)
-				elseif k == 'FrameGenerationMode' then
-					frameGenerationCvar = cvar
-					frameGenerationCvarEnableValue = cvarValue
-					
-					__log(string.format("Frame generation settings loaded: %s %s", frameGenerationCvar, frameGenerationCvarEnableValue))
-					if string.find(frameGenerationCvar, "FidelityFX") then
-						__log("Detected FSRFI")
-						isFSRFI = true
-					end
 				else
 					checkCvar(cvar, cvarValue, forceSetExpected)
 				end
@@ -459,6 +456,7 @@ end
 
 local firstTimeReflex = true
 local function pushReflex()
+	-- this is gonna be enabled the first time on AMD but it doesnt matter cause streamline is disabled anyways so it shouldnt do anything
 	if isFSRFI then
 		__log("Skipping reflex, FSRFI detected")
 		return
@@ -780,6 +778,19 @@ NotifyOnNewObject('/Script/Engine.Level', function()
 	delayedInjection()
 end)
 
+local function detectFrameGeneration()
+	local amdValue = getCVar(amdFrameGenerationCvar, 'int')
+	
+	if tostring(amdValue) == amdFrameGenerationCvarEnableValue then
+		isFSRFI = true
+		return amdFrameGenerationCvar, amdFrameGenerationCvarEnableValue
+	end
+
+	isFSRFI = false
+	-- will always fall back to nvidia if we don't detect AMD
+	return nvFrameGenerationCvar, nvFrameGenerationCvarEnableValue
+end
+
 local fgCutsceneDebounce = false
 local function overrideCutsceneFg()
 	if fgCutsceneDebounce then
@@ -787,6 +798,10 @@ local function overrideCutsceneFg()
 	end
 
 	fgCutsceneDebounce = true
+
+	-- from my testing, this happens before the game decides to change FG - not sure if the timing holds true on all PCs 
+	frameGenerationCvar, frameGenerationCvarEnableValue = detectFrameGeneration()
+	__log(string.format("movie scene detected FG %s %s", frameGenerationCvar, frameGenerationCvarEnableValue))
 
 	ExecuteWithDelay(100, function()
 		if config.EnableFGCutscenes then
