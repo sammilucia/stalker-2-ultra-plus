@@ -1,0 +1,36 @@
+{
+    "Lua.format.defaultConfig": {
+        "indent_style": "tab",
+        "indent_size": "4"
+    },
+    "diagnostics.globals": [
+        "FName",
+        "EFindName",
+        "NAME_None",
+        "success",
+        "FindFirstOf",
+        "StaticFindObject",
+        "StaticConstructObject",
+        "NotifyOnNewObject",
+        "UObject",
+        "CreateInvalidObject",
+        "ModRef",
+        "UEngine",
+        "UGameInstance",
+        "UGameViewportClient",
+        "APlayerController",
+        "FindAllOf",
+        "UWorld",
+        "AController",
+        "APawn",
+        "ULevel",
+        "AActor",
+        "AGameModeBase",
+        "AGameStateBase",
+        "UnrealVersion",
+        "UKismetStringLibrary",
+        "UKismetTextLibrary",
+        "UKismetMathLibrary",
+        "UKismetSystemLibrary"
+    ]
+}

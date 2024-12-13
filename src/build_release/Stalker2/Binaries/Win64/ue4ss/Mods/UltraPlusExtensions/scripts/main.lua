@@ -1,6 +1,6 @@
 ---@diagnostic disable: undefined-global
 UltraExtensions = {
-	__VERSION	 = '3.1-stalker-2',
+	__VERSION	 = '3.2-stalker-2',
 	__DESCRIPTION = 'Extensions for Ultra+ for S.T.A.L.K.E.R. 2',
 	__URL		 = 'https://github.com/sammilucia/sh2-ultra-plus-extensions',
 	__LICENSE	 = [[
@@ -39,6 +39,7 @@ local shortcut = {
 	-- for a complete list: https://docs.ue4ss.com/lua-api/table-definitions/key.html
 	Denoiser		         = Key.F2,
 	Vignette		         = Key.F3,
+	MotionBlur				 = Key.F4,
 	DLSSPreset		         = Key.F6,
 	Reflex			         = Key.F6,	-- CTRL + F6
 	ReflectionBias           = Key.F9,
@@ -55,20 +56,22 @@ shortcut.sortOrder = {
 	UltraPlusQuality  = 2,
 	Denoiser		  = 3,
 	Vignette		  = 4,
-	DLSSPreset		  = 5,
-	ReflectionBias	  = 6,
-	ReflectionQuality = 7,
-	LumenPercent	  = 8,
-	EnableFGCutscenes = 9,
-	Reflex			  = 10,
-	HDR				  = 11,
-	GameQualityPreset = 12,
+	MotionBlur		  = 5,
+	DLSSPreset		  = 6,
+	ReflectionBias	  = 7,
+	ReflectionQuality = 8,
+	LumenPercent	  = 9,
+	EnableFGCutscenes = 10,
+	Reflex			  = 11,
+	HDR				  = 12,
+	GameQualityPreset = 13,
 }
 shortcut.comment = {
 	EnableModGranularControl = {'; When EnableModGranularControl is False, shortcuts with \'*\' are overridden', '; by UltraPlusQuality.', ' ', '; CTRL + F2:  Disable Ultra+ Quality Presets: True/False', '; When \'True\', disables UltraPlusQuality and enables the more granular', '; controls above. (To disable granular controls, set to \'False\' and', '; restart the game.)'},
 	UltraPlusQuality         = {'; CTRL + F12: Ultra+ Quality Preset:', '; When EnableModGranularControl is False, this setting controls Ultra+\'s', '; quality level.', ';             Low, Medium, High, Ultra'},
 	Denoiser		         = {'; *F2:  Reflections denoiser: None, Temporal, RayReconstruction'},
 	Vignette		         = {'; F3:   Vignette: True/False'},
+	MotionBlur		         = {'; F4:   Motion Blur: Off/Low/High'},
 	DLSSPreset		         = {'; F6:   DLSS preset:', ';       A = 1', ';       C = 3', ';       E = 5', ';       F = 6', ';       G = 7 (DLSS 3.8+ only)'},
 	ReflectionBias	         = {'; *F9:  Cycles between reflection smoothing bias (higher makes', '; reflections more mirror-like. Ultra+ default is 0.6)',';          Vanilla = 0',';          Light = 0.2',';          Medium = 0.4', ';          High = 0.6'},
 	ReflectionQuality        = {'; *F10: Lumen reflections quality:', ';       Vanilla, High, Ultra'},
@@ -99,6 +102,11 @@ local var = {
 		HIGH	= 'high',
 		ULTRA	= 'ultra',
 	},
+	MotionBlur = {
+		OFF = 'Off',
+		LOW = 'Low',
+		HIGH = 'High',
+	},
 	LumenPercent = {
 		ULTRAPERF = '0.33',
 		PERFORMANCE = '0.5',
@@ -124,7 +132,7 @@ local var = {
 		MEDIUM = 'medium',
 		HIGH = 'high',
 		ULTRA = 'ultra',
-	}
+	},
 }
 local UltraPlusQualityPresets = {
 	LOW = {
@@ -166,6 +174,7 @@ local UltraPlusQualityPresets = {
 }
 local config = {
 	Vignette = true, -- will be left at default in "simplified" mode
+	MotionBlur = var.MotionBlur.LOW,
 	DLSSPreset = var.DLSSPreset.G, -- TODO should we set this or leave at user preference/default
 	Reflex = true, -- we should just force enable this if the user uses the nvidiafg version
 	HDR = false, -- power user option
@@ -451,6 +460,26 @@ end
 
 local function pushVignette()
 	setCVar('r.Tonemapper.Quality', config.Vignette and '5' or '1')
+	-- @Lazorr the ideal command is this, but it's not working
+	-- setCVar('show', 'vignette')
+end
+
+local function pushMotionBlur()
+	local switchMotionBlur = {
+		[var.MotionBlur.OFF] = function()
+			setCVar('r.DefaultFeature.MotionBlur', '0')
+		end,
+		[var.MotionBlur.LOW] = function()
+			setCVar('r.DefaultFeature.MotionBlur', '1')
+			setCVar('r.MotionBlur.Amount', '0.2')
+		end,
+		[var.MotionBlur.HIGH] = function()
+			setCVar('r.DefaultFeature.MotionBlur', '1')
+			setCVar('r.MotionBlur.Amount', '0.4')
+		end,
+	}
+	local switchFunction = switchMotionBlur[config.MotionBlur]
+	switchFunction()
 end
 
 local function pushDLSSPreset()
@@ -492,6 +521,7 @@ local function pushReflectionQuality()
 	switchFunction()
 end
 
+-- there was an extra space here and now there's a comment
 
 local function pushLumenPercent()
 	-- DISABLED - in Stalker 2 this just changes DLSS scale
@@ -539,13 +569,20 @@ local function RegisterUltraKeybinds()
 	end)
 
 	RegisterKeyBind(shortcut.Vignette, function()
-		if not config.EnableModGranularControl then
-			return
-		end
-
 		__log((config.Vignette and 'Enabling' or 'Disabling') .. ' vignette')
 		config.Vignette = not config.Vignette
 		pushVignette()
+		saveConfig()
+	end)
+
+	RegisterKeyBind(shortcut.MotionBlur, function()
+		config.MotionBlur = switch({
+			[var.MotionBlur.LOW] = var.MotionBlur.HIGH,
+			[var.MotionBlur.HIGH] = var.MotionBlur.OFF,
+			[var.MotionBlur.OFF] = var.MotionBlur.LOW,
+		}, config.MotionBlur, var.MotionBlur.LOW)
+		__log('MotionBlur cycled to ' .. tostring(config.MotionBlur))
+		pushMotionBlur()
 		saveConfig()
 	end)
 
@@ -567,20 +604,12 @@ local function RegisterUltraKeybinds()
 	end)
 
 	RegisterKeyBind(shortcut.Reflex, {ModifierKey.CONTROL}, function()
-		if not config.EnableModGranularControl then
-			return
-		end
-
 		config.Reflex = not config.Reflex
 		pushReflex()
 		saveConfig()
 	end)
 
 	RegisterKeyBind(shortcut.HDR, {ModifierKey.CONTROL}, function()
-		if not config.EnableModGranularControl then
-			return
-		end
-
 		__log((config.HDR and 'Disabling' or 'Enabling') .. ' HDR')
 		config.HDR = not config.HDR
 		pushHDR()
