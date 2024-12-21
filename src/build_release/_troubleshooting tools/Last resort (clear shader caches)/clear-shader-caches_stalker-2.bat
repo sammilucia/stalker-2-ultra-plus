@@ -1,7 +1,7 @@
 @echo off
-title S.T.A.L.K.E.R. 2 (2024) cache-shader-caches v0.6
+title S.T.A.L.K.E.R. 2 (2024) cache-shader-caches v0.7
 
-echo [1mS.T.A.L.K.E.R. 2 (2024) clear-shader-caches v0.6 by SammiLucia[0m
+echo [1mS.T.A.L.K.E.R. 2 (2024) clear-shader-caches v0.7 by SammiLucia[0m
 echo.
 echo.
 echo This script will reset shader caches for:
@@ -78,12 +78,12 @@ goto :endScript
     )
 
     echo|set /p="S.T.A.L.K.E.R. 2 Unreal Engine shader caches..."
-    if not exist "%LOCALAPPDATA%\Stalker2\Saved\D3D*.ushaderprecache" (  
+    if not exist "%LOCALAPPDATA%\Stalker2\Saved\*.ushaderprecache" if not exist "%LOCALAPPDATA%\Stalker2\Saved\*.upipelinecache" (  
         echo ......Error: Not found.
         echo.
         echo.
-        echo The files [7m%LOCALAPPDATA%\Stalker2\Saved\D3D*.upipelinecache[0m
-        echo and/or [7m%LOCALAPPDATA%\Stalker2\Saved\D3D*.ushaderprecache[0m were not found.
+        echo The files [7m%LOCALAPPDATA%\Stalker2\Saved\*.upipelinecache[0m
+        echo and/or [7m%LOCALAPPDATA%\Stalker2\Saved\*.ushaderprecache[0m were not found.
         echo.
         echo [1m^>^>^>^>^> Please check these locations manually.[0m
         echo.
