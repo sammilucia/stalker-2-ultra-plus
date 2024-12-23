@@ -1,6 +1,6 @@
 @echo off
 
-set VERSION=1.8.3
+set VERSION=1.9.0-rc1
 
 RMDIR /S /Q build
 MKDIR build
