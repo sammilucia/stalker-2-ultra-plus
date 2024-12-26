@@ -137,7 +137,7 @@ UltraSettings.settings = {
     },
 
     LightShafts = {
-        Comment = 'game/off/on',
+        Comment = 'game/off/on; toggles light beam effect typically seen coming through windows',
         Commands = { GAME = {{}},
                      OFF = {{'r.LightShaftQuality', '0'}}, 
                      ON =  {{'r.LightShaftQuality', '1'}}},
@@ -356,5 +356,3 @@ function UltraSettings.iterateSortedSettings(delegate)
         delegate(k)
     end
 end
-
-UltraSettings.write("blah.ini")
