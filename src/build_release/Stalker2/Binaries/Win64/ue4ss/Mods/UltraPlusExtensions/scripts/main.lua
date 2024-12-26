@@ -50,7 +50,7 @@ local frameGenerationCvar = "r.Streamline.DLSSG.Enable"
 local frameGenerationCvarEnableValue = "1" 
 
 UltraSettings.settings.FGCutscenes = {
-	Comment = 'off/on - off disables all keybinds except for F12 which loads the current configuration file in game',
+	Comment = 'off/on; enables support for frame generation in cutscenes - both DLSSG and FSRFG are supported',
 	Commands = { OFF = {{ 'Cutscenes', '0'}},
 				 ON = {{'Cutscenes', '1'}}},
 	CurrentSetting = 'off',

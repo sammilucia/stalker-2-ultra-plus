@@ -23,7 +23,7 @@ end
 
 UltraSettings.settings = {
     ChromaticAberration = {
-        Comment = 'game/off/on',
+        Comment = 'game/off/on; off is recommended due to the games implementation of chromatic aberration - it just blurs the image',
         Commands = { GAME = {{}},
                      OFF = {{'r.SceneColorFringeQuality', '0'}}, 
                      ON =  {{'r.SceneColorFringeQuality', '1'}}},
@@ -79,7 +79,7 @@ UltraSettings.settings = {
     },
 
     EnableKeybinds = {
-        Comment = 'off/on - off disables all keybinds except for F12 which loads the current configuration file in game',
+        Comment = 'off/on; off disables all keybinds except for F12 which loads the current configuration file in game - can be toggled on in-game by setting to on in config and pressing F12',
         Commands = { OFF = {{ 'Keybinds', '0'}},
                      ON = {{'Keybinds', '1'}}},
         CurrentSetting = 'off',
@@ -91,7 +91,7 @@ UltraSettings.settings = {
     },
 
     GameQualityPreset = {
-        Comment = 'low/medium/high/epic; This is separate from the game graphics menus. Set to the same as your in-game graphics quality.',
+        Comment = 'low/medium/high/epic; this is separate from the game graphics menus - set to the same as your in-game graphics quality',
         Commands = { LOW = {{ 'Scalability', '0'}},
                      MEDIUM = {{'Scalability', '1'}},
                      HIGH = {{'Scalability', '2'}},
@@ -112,7 +112,7 @@ UltraSettings.settings = {
     },
     
     HDR = {
-        Comment = 'game/off/on',
+        Comment = 'game/off/on; this setting provides a mechanism for using HDR in borderless fullscreen which the game does not support by default',
         Commands = { GAME = {{}},
                      OFF = {{'r.AllowHDR', '0'},
                             {'r.HDR.EnableHDROutput', '0'},
@@ -171,7 +171,7 @@ UltraSettings.settings = {
     },
 
     ReflectionBias = {
-        Comment = 'game/off/low/medium/high',
+        Comment = 'game/off/low/medium/high; controls smoothness of reflective surfaces - some bias is preferred for visual quality',
         Commands = { GAME = {{}},
                      OFF = {{'r.Lumen.Reflections.SmoothBias', '0'}}, 
                      LOW = {{'r.Lumen.Reflections.SmoothBias', '0.2'}},
@@ -190,7 +190,7 @@ UltraSettings.settings = {
     },
 
     ReflectionQuality = {
-        Comment = 'game/vanilla/high/ultra',
+        Comment = 'game/vanilla/high/ultra; maximum roughness of surfaces considered to be reflective - a higher quality means more surfaces will be included in reflections',
         Commands = { GAME = {{}}, 
                      VANILLA = {{'r.Lumen.Reflections.MaxRoughnessToTrace', '0.4'}},
                      HIGH = {{'r.Lumen.Reflections.MaxRoughnessToTrace', '0.55'}},
@@ -208,7 +208,7 @@ UltraSettings.settings = {
     },
 
     Reflex = {
-        Comment = 'game/off/on',
+        Comment = 'game/off/on; enables reflex low latency with boost - the game does not support this by default',
         Commands = { GAME = {{}},
                      OFF = {{'t.Streamline.Reflex.Enable', '0'}}, 
                      ON =  {{'t.Streamline.Reflex.Enable', '1'},
