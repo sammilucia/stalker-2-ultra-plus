@@ -23,13 +23,13 @@ end
 
 UltraSettings.settings = {
     ChromaticAberration = {
-        Comment = 'game/off/on; off is recommended due to the games implementation of chromatic aberration - it just blurs the image',
+        Comment = 'game/off/on; off is UltraPlus default - this games implementation just warps the image and introduces blurring',
         Commands = { GAME = {{}},
                      OFF = {{'r.SceneColorFringeQuality', '0'}}, 
                      ON =  {{'r.SceneColorFringeQuality', '1'}}},
         UserSettings = { OFF = 'off', ON = 'on'},
         UserSettingsOrder = { a = 'off', b = 'on' },
-        CurrentSetting = 'game',
+        CurrentSetting = 'off',
         FirstDelay = 0,
         Modified = true,
         Apply = function(setFunction)
@@ -356,3 +356,5 @@ function UltraSettings.iterateSortedSettings(delegate)
         delegate(k)
     end
 end
+
+UltraSettings.write("blah.ini")
