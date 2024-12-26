@@ -1,6 +1,6 @@
 @echo off
 
-set VERSION=2.0.2
+set VERSION=2.0.3
 
 RMDIR /S /Q build
 MKDIR build
