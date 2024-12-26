@@ -235,7 +235,7 @@ UltraSettings.settings = {
         CurrentSetting = 'game',
         FirstDelay = 0,
         Modified = true,
-        Shortcut = 'F5',
+        Shortcut = 'F3',
         ShortcutCtrlModifier = false,
         Apply = function(setFunction)
             applySetting(UltraSettings.settings.Vignette, UltraSettings.settings.Vignette.CurrentSetting, setFunction)
@@ -246,7 +246,23 @@ UltraSettings.settings = {
 function UltraSettings.write(ini_path)
     local file = io.open(ini_path, 'w')
 
+    header	 = [[
+; In-game keybinds are disabled by default, set EnableKeybinds=on below to enable them on game start - or it can be turned on in game
+; Press F12 to load the current configuration file while in-game - you can now edit the configuration file and load the changes while in-game
+; If a setting does not specify a keybind, then it can only be changed via the configuration file
+; The 'game' option for settings below tells Ultra Plus to leave the setting at game default
+
+]]
+
+    file:write(header)
+
     local function writeSetting(k)
+        if UltraSettings.settings[k].ShortcutCtrlModifier then
+            file:write('; CTRL + ' .. UltraSettings.settings[k].Shortcut .. '\n')
+        elseif UltraSettings.settings[k].Shortcut then
+            file:write('; ' .. UltraSettings.settings[k].Shortcut .. '\n')
+        end
+
         file:write('; ' .. UltraSettings.settings[k].Comment .. '\n')
         file:write(tostring(k) .. '=' .. UltraSettings.settings[k].CurrentSetting .. '\n\n')
     end
@@ -340,4 +356,3 @@ function UltraSettings.iterateSortedSettings(delegate)
         delegate(k)
     end
 end
-
