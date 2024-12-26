@@ -69,13 +69,17 @@ end
 local cvarTimer = 0
 --- @param cmd string
 --- @param val string
-local function setCVar(cmd, val)
+local function setCVar(cmd, val, delay)
 	if not ksl:IsValid() then
 		error('KismetSystemLibrary is not valid\n')
 	end
 
+	if not delay then
+		delay = 0
+	end
+
 	cvarTimer = cvarTimer + 50
-	ExecuteWithDelay(cvarTimer, function()
+	ExecuteWithDelay(cvarTimer + delay, function()
 		cvarTimer = cvarTimer - 50
 		__log(string.format("Timer %s setting cvar %s to %s", cvarTimer, cmd, tostring(val)))
 		ExecuteInGameThread(function()

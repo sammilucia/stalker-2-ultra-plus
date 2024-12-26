@@ -3,10 +3,11 @@ UltraSettings = {}
 function applySetting(setting, current, setFunction)
     if current ~= 'game' and setting.Modified then
         for k,v in pairs(setting.Commands[string.upper(current)]) do
-            setFunction(v[1], v[2])
+            setFunction(v[1], v[2], setting.FirstDelay)
         end
     end
 
+    setting.FirstDelay = 0
     setting.Modified = false
 end
 
@@ -215,7 +216,7 @@ UltraSettings.settings = {
         UserSettings = { OFF = 'off', ON = 'on' },
         UserSettingsOrder = { a = 'off', b = 'on' },
         CurrentSetting = 'game',
-        FirstDelay = 0,
+        FirstDelay = 5000,
         Modified = true,
         Shortcut = 'F6',
         ShortcutCtrlModifier = true,
