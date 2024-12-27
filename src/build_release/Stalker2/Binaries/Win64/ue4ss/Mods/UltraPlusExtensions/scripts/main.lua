@@ -49,6 +49,11 @@ local amdFrameGenerationCvarEnableValue = "1"
 local frameGenerationCvar = "r.Streamline.DLSSG.Enable"
 local frameGenerationCvarEnableValue = "1" 
 
+UltraSettings.settings.ChromaticAberration.Comment = UltraSettings.settings.ChromaticAberration.Comment .. ' off is UltraPlus default - this games implementation just warps the image and introduces blurring'
+UltraSettings.settings.ChromaticAberration.CurrentSetting = 'off'
+UltraSettings.settings.HDR.Comment = UltraSettings.settings.HDR.Comment .. ' this setting provides a mechanism for using HDR in borderless fullscreen which the game does not support by default'
+UltraSettings.settings.Reflex.Comment = UltraSettings.settings.Reflex.Comment .. ' - the game does not support this by default'
+
 UltraSettings.settings.FGCutscenes = {
 	Comment = 'off/on; enables support for frame generation in cutscenes - both DLSSG and FSRFG are supported',
 	Commands = { OFF = {{ 'Cutscenes', '0'}},

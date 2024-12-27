@@ -23,13 +23,13 @@ end
 
 UltraSettings.settings = {
     ChromaticAberration = {
-        Comment = 'game/off/on; off is UltraPlus default - this games implementation just warps the image and introduces blurring',
+        Comment = 'game/off/on;',
         Commands = { GAME = {{}},
                      OFF = {{'r.SceneColorFringeQuality', '0'}}, 
                      ON =  {{'r.SceneColorFringeQuality', '1'}}},
         UserSettings = { OFF = 'off', ON = 'on'},
         UserSettingsOrder = { a = 'off', b = 'on' },
-        CurrentSetting = 'off',
+        CurrentSetting = 'game',
         FirstDelay = 0,
         Modified = true,
         Apply = function(setFunction)
@@ -38,7 +38,7 @@ UltraSettings.settings = {
     },
 
     Denoiser = {
-        Comment = 'game/none/temporal/rayreconstruction',
+        Comment = 'game/none/temporal/rayreconstruction;',
         Commands = { GAME = {{}},
                      NONE = {{'r.NGX.DLSS.DenoiserMode', '0'},
                              {'r.Lumen.Reflections.Temporal', '0'}},
@@ -59,7 +59,7 @@ UltraSettings.settings = {
     },
 
     DLSSPreset = {
-        Comment = 'game/a/c/e/f/g',
+        Comment = 'game/a/c/e/f/g;',
         Commands = { GAME = {{}},
                      A = {{'r.NGX.DLSS.Preset', '1'}},
                      C = {{'r.NGX.DLSS.Preset', '3'}},
@@ -112,7 +112,7 @@ UltraSettings.settings = {
     },
     
     HDR = {
-        Comment = 'game/off/on; this setting provides a mechanism for using HDR in borderless fullscreen which the game does not support by default',
+        Comment = 'game/off/on;',
         Commands = { GAME = {{}},
                      OFF = {{'r.AllowHDR', '0'},
                             {'r.HDR.EnableHDROutput', '0'},
@@ -152,7 +152,7 @@ UltraSettings.settings = {
     },
 
     MotionBlur = {
-        Comment = 'game/off/low/medium/high',
+        Comment = 'game/off/low/medium/high;',
         Commands = { GAME = {{}},
                      OFF = {{'r.MotionBlur.Amount', '0'}}, 
                      LOW = {{'r.MotionBlur.Amount', '0.2'}},
@@ -208,7 +208,7 @@ UltraSettings.settings = {
     },
 
     Reflex = {
-        Comment = 'game/off/on; enables reflex low latency with boost - the game does not support this by default',
+        Comment = 'game/off/on; enables reflex low latency with boost',
         Commands = { GAME = {{}},
                      OFF = {{'t.Streamline.Reflex.Enable', '0'}}, 
                      ON =  {{'t.Streamline.Reflex.Enable', '1'},
